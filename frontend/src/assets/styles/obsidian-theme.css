@@ -1,0 +1,389 @@
+:root {
+  /* 字体 */
+  --font-main: 'Segoe UI', 'Fira Sans', sans-serif;
+  --font-code: 'Fira Code', 'Consolas', monospace;
+  
+  /* 暗色主题 */
+  --bg-dark: hsl(235, 15%, 9%);
+  --surface-dark: hsl(235, 15%, 15%);
+  --surface-dark-2: hsl(235, 15%, 20%);
+  --text-dark: hsl(60, 30%, 96%);
+  --border-dark: rgba(255, 255, 255, 0.1);
+  
+  /* 亮色主题 */
+  --bg-light: hsl(235, 15%, 96%);
+  --surface-light: hsl(235, 15%, 99%);
+  --surface-light-2: hsl(235, 15%, 95%);
+  --text-light: hsl(234, 14%, 15%);
+  --border-light: rgba(0, 0, 0, 0.1);
+  
+  /* 主题色 */
+  --color-pink: hsl(330, 100%, 75%);
+  --color-orange: hsl(35, 100%, 75%);
+  --color-yellow: hsl(60, 100%, 75%);
+  --color-green: hsl(115, 100%, 75%);
+  --color-blue: hsl(170, 100%, 75%);
+  --color-purple: hsl(250, 100%, 75%);
+  --color-red: hsl(0, 84%, 60%);
+  
+  /* 文本颜色 */
+  --text-muted: hsl(235, 15%, 50%);
+  --text-muted-dark: hsl(235, 15%, 60%);
+  --text-muted-light: hsl(235, 15%, 40%);
+  
+  /* 渐变角度 */
+  --gradient-angle: 135deg;
+  
+  /* UI组件 */
+  --tab-height: 36px;
+  --sidebar-width: 280px;
+  --header-height: 48px;
+  --window-border-radius: 6px;
+  --panel-gap: 8px;
+  
+  /* 当前主题变量 - 默认暗色主题 */
+  --bg-color: var(--bg-dark);
+  --surface-color: var(--surface-dark);
+  --surface-color-2: var(--surface-dark-2);
+  --text-color: var(--text-dark);
+  --border-color: var(--border-dark);
+}
+
+/* 亮色主题 */
+.theme-light {
+  --bg-color: var(--bg-light);
+  --surface-color: var(--surface-light);
+  --surface-color-2: var(--surface-light-2);
+  --text-color: var(--text-light);
+  --border-color: var(--border-light);
+}
+
+/* 暗色主题 */
+.theme-dark {
+  --bg-color: var(--bg-dark);
+  --surface-color: var(--surface-dark);
+  --surface-color-2: var(--surface-dark-2);
+  --text-color: var(--text-dark);
+  --border-color: var(--border-dark);
+}
+
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow: hidden;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Firefox滚动条 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) var(--surface-color);
+}
+
+/* 渐变标题样式 */
+.gradient-title-1 {
+  background: linear-gradient(
+    var(--gradient-angle),
+    var(--color-pink) 0%,
+    var(--color-orange) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+.gradient-title-2 {
+  background: linear-gradient(
+    var(--gradient-angle),
+    var(--color-orange) 0%,
+    var(--color-yellow) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+.gradient-title-3 {
+  background: linear-gradient(
+    var(--gradient-angle),
+    var(--color-yellow) 0%,
+    var(--color-green) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+.gradient-title-4 {
+  background: linear-gradient(
+    var(--gradient-angle),
+    var(--color-green) 0%,
+    var(--color-blue) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+.gradient-title-5 {
+  background: linear-gradient(
+    var(--gradient-angle),
+    var(--color-blue) 0%,
+    var(--color-purple) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+.gradient-title-6 {
+  background: linear-gradient(
+    var(--gradient-angle),
+    var(--color-purple) 0%,
+    var(--color-pink) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+/* 通用按钮样式 */
+.btn-obsidian {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-family: var(--font-main);
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-obsidian:hover {
+  background-color: var(--surface-color-2);
+  border-color: var(--color-blue);
+}
+
+.btn-obsidian:active {
+  transform: translateY(1px);
+}
+
+.btn-obsidian.primary {
+  background-color: var(--color-blue);
+  color: var(--bg-dark);
+  border-color: var(--color-blue);
+  font-weight: 500;
+}
+
+.btn-obsidian.primary:hover {
+  background-color: hsl(170, 100%, 65%);
+  border-color: hsl(170, 100%, 65%);
+}
+
+.btn-obsidian.secondary {
+  background-color: var(--surface-color-2);
+  border-color: var(--border-color);
+}
+
+.btn-obsidian.danger {
+  background-color: hsl(0, 100%, 75%);
+  color: var(--bg-dark);
+  border-color: hsl(0, 100%, 75%);
+}
+
+.btn-obsidian.danger:hover {
+  background-color: hsl(0, 100%, 65%);
+  border-color: hsl(0, 100%, 65%);
+}
+
+/* 输入框样式 */
+.input-obsidian {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: var(--text-color);
+  font-family: var(--font-main);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-obsidian:focus {
+  border-color: var(--color-blue);
+  box-shadow: 0 0 0 2px rgba(170, 255, 255, 0.2);
+}
+
+.input-obsidian::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.theme-light .input-obsidian::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* 卡片样式 */
+.card-obsidian {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--window-border-radius);
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.card-obsidian:hover {
+  border-color: var(--color-blue);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 分隔线 */
+.divider-obsidian {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 16px 0;
+}
+
+/* 标签样式 */
+.tag-obsidian {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background-color: var(--surface-color-2);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.tag-obsidian:hover {
+  background-color: var(--color-blue);
+  color: var(--bg-dark);
+  border-color: var(--color-blue);
+}
+
+/* 工具提示 */
+.tooltip-obsidian {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-obsidian::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--surface-color-2);
+  color: var(--text-color);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  border: 1px solid var(--border-color);
+  margin-bottom: 4px;
+}
+
+.tooltip-obsidian:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* 响应式断点 */
+@media (max-width: 1200px) {
+  :root {
+    --sidebar-width: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 200px;
+    --header-height: 44px;
+    --tab-height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --sidebar-width: 180px;
+    --header-height: 40px;
+    --tab-height: 28px;
+  }
+} 

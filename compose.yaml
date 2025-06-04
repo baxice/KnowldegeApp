@@ -1,0 +1,49 @@
+version: '3'
+services:
+  # MySQL数据库
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 2250238116
+      MYSQL_DATABASE: knowledge_base
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+  
+  # MinIO对象存储
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: 2250238116
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+  
+  # 后端服务
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - minio
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/knowledge_base
+      - MINIO_ENDPOINT=http://minio:9000
+  
+  # 前端服务
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:8080/api
+
+volumes:
+  mysql_data:
+  minio_data: 

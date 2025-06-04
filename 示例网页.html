@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnowledgeBase - 知识管理平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* 字体 */
+            --font-main: 'Segoe UI', 'Fira Sans', sans-serif;
+            --font-code: 'Fira Code', monospace;
+            
+            /* 暗色主题 */
+            --bg-dark: hsl(235, 15%, 9%);
+            --surface-dark: hsl(235, 15%, 15%);
+            --surface-dark-2: hsl(235, 15%, 20%);
+            --text-dark: hsl(60, 30%, 96%);
+            --border-dark: rgba(255, 255, 255, 0.1);
+            
+            /* 亮色主题 */
+            --bg-light: hsl(235, 15%, 96%);
+            --surface-light: hsl(235, 15%, 99%);
+            --surface-light-2: hsl(235, 15%, 95%);
+            --text-light: hsl(234, 14%, 15%);
+            --border-light: rgba(0, 0, 0, 0.1);
+            
+            /* 主题色 */
+            --color-pink: hsl(330, 100%, 75%);
+            --color-orange: hsl(35, 100%, 75%);
+            --color-yellow: hsl(60, 100%, 75%);
+            --color-green: hsl(115, 100%, 75%);
+            --color-blue: hsl(170, 100%, 75%);
+            --color-purple: hsl(250, 100%, 75%);
+            
+            /* 渐变角度 */
+            --gradient-angle: 135deg;
+            
+            /* UI组件 */
+            --tab-height: 36px;
+            --sidebar-width: 280px;
+            --header-height: 48px;
+            --window-border-radius: 6px;
+            --panel-gap: 8px;
+            
+            /* 当前主题变量 */
+            --bg-color: var(--bg-dark);
+            --surface-color: var(--surface-dark);
+            --surface-color-2: var(--surface-dark-2);
+            --text-color: var(--text-dark);
+            --border-color: var(--border-dark);
+        }
+        
+        .theme-light {
+            --bg-color: var(--bg-light);
+            --surface-color: var(--surface-light);
+            --surface-color-2: var(--surface-light-2);
+            --text-color: var(--text-light);
+            --border-color: var(--border-light);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* 主布局 */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            height: var(--header-height);
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .logo-icon {
+            color: var(--color-blue);
+            font-size: 24px;
+        }
+        
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 20px;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            background-color: var(--surface-color-2);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px 12px;
+            color: var(--text-color);
+            outline: none;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .btn:hover {
+            background-color: var(--surface-color-2);
+        }
+        
+        .btn-primary {
+            background-color: var(--color-blue);
+            color: var(--bg-dark);
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background-color: hsl(170, 100%, 65%);
+        }
+        
+        /* 下拉菜单 */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--surface-color);
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            z-index: 100;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            top: 100%;
+            left: 0;
+            margin-top: 4px;
+        }
+        
+        .dropdown-content a {
+            color: var(--text-color);
+            padding: 10px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: var(--surface-color-2);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* 左侧边栏 */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--surface-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .sidebar-section {
+            padding: 16px;
+        }
+        
+        .sidebar-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            color: var(--color-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .file-tree {
+            list-style: none;
+        }
+        
+        .file-item {
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .file-item:hover {
+            background-color: var(--surface-color-2);
+        }
+        
+        .file-icon {
+            color: var(--color-blue);
+        }
+        
+        /* 头像组件 */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--surface-color);
+            margin-top: auto;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(var(--gradient-angle), var(--color-blue), var(--color-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .user-email {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        /* 主编辑区 */
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* 标签页容器 */
+        .tabs-container {
+            display: flex;
+            height: var(--tab-height);
+            background: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+        
+        /* 单个标签页 */
+        .tab {
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            height: 100%;
+            border-right: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+            font-size: 14px;
+            gap: 8px;
+        }
+        
+        .tab.active {
+            background: var(--bg-color);
+            border-bottom: 2px solid var(--color-blue);
+        }
+        
+        .tab:hover:not(.active) {
+            background: var(--surface-color-2);
+        }
+        
+        .close-tab {
+            margin-left: 4px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            opacity: 0.7;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 1;
+        }
+        
+        /* 内容显示区域 */
+        .content-area {
+            flex: 1;
+            display: flex;
+            overflow: auto;
+            padding: 16px;
+            background-color: var(--bg-color);
+        }
+        
+        .editor {
+            display: flex;
+            flex: 1;
+            gap: 16px;
+        }
+        
+        .markdown-input, .preview {
+            flex: 1;
+            height: 100%;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--window-border-radius);
+            background-color: var(--surface-color);
+            overflow: auto;
+        }
+        
+        .markdown-input {
+            font-family: var(--font-code);
+            resize: none;
+            outline: none;
+            color: var(--text-color);
+            background-color: var(--surface-color);
+        }
+        
+        .preview {
+            font-family: var(--font-main);
+            line-height: 1.6;
+        }
+        
+        .preview h1, .preview h2, .preview h3 {
+            margin: 1em 0 0.5em 0;
+        }
+        
+        /* 渐变标题实现 */
+        .preview h1 {
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            background-image: linear-gradient(
+                var(--gradient-angle),
+                var(--color-pink) 0,
+                var(--color-orange) 100%
+            );
+            font-weight: 600;
+            font-size: 2.2em;
+        }
+        
+        .preview h2 {
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            background-image: linear-gradient(
+                var(--gradient-angle),
+                var(--color-orange) 0,
+                var(--color-yellow) 100%
+            );
+            font-weight: 600;
+            font-size: 1.8em;
+        }
+        
+        /* 状态栏 */
+        .status-bar {
+            height: 24px;
+            background-color: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 12px;
+            justify-content: space-between;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* 弹出窗口 */
+        .modal-window {
+            position: fixed;
+            background: var(--surface-color);
+            border-radius: var(--window-border-radius);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            min-width: 400px;
+            min-height: 300px;
+            z-index: 1000;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: var(--surface-color-2);
+            cursor: move;
+        }
+        
+        .modal-content {
+            padding: 16px;
+            height: calc(100% - 40px);
+            overflow: auto;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 18px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+        
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .editor {
+                flex-direction: column;
+            }
+            
+            .markdown-input, .preview {
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-brain logo-icon"></i>
+                <span>KnowledgeBase</span>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="搜索文档和笔记...">
+            </div>
+            
+            <div class="actions">
+                <button class="btn" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                    <span>主题</span>
+                </button>
+                <button class="btn">
+                    <i class="fas fa-cog"></i>
+                    <span>设置</span>
+                </button>
+                
+                <!-- 新建按钮（带下拉菜单） -->
+                <div class="dropdown">
+                    <button class="btn btn-primary" id="new-dropdown">
+                        <i class="fas fa-plus"></i>
+                        <span>新建</span>
+                        <i class="fas fa-caret-down" style="margin-left: 4px;"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="#" id="new-document">
+                            <i class="fas fa-file-alt"></i>
+                            <span>新建文档</span>
+                        </a>
+                        <a href="#" id="new-note">
+                            <i class="fas fa-sticky-note"></i>
+                            <span>新建笔记</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 左侧边栏 -->
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-folder"></i>
+                        <span>文档库</span>
+                    </div>
+                    <ul class="file-tree">
+                        <li class="file-item">
+                            <i class="fas fa-file-pdf file-icon"></i>
+                            <span>项目计划书.pdf</span>
+                        </li>
+                        <li class="file-item">
+                            <i class="fas fa-file-word file-icon"></i>
+                            <span>需求文档.docx</span>
+                        </li>
+                        <li class="file-item">
+                            <i class="fas fa-file-excel file-icon"></i>
+                            <span>项目预算.xlsx</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-sticky-note"></i>
+                        <span>我的笔记</span>
+                    </div>
+                    <ul class="file-tree">
+                        <li class="file-item">
+                            <i class="fas fa-file-alt file-icon"></i>
+                            <span>开发笔记.md</span>
+                        </li>
+                        <li class="file-item">
+                            <i class="fas fa-file-alt file-icon"></i>
+                            <span>会议记录.md</span>
+                        </li>
+                        <li class="file-item">
+                            <i class="fas fa-file-alt file-icon"></i>
+                            <span>学习资源.md</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-tags"></i>
+                        <span>标签</span>
+                    </div>
+                    <ul class="file-tree">
+                        <li class="file-item">
+                            <i class="fas fa-tag" style="color: var(--color-green);"></i>
+                            <span>开发</span>
+                        </li>
+                        <li class="file-item">
+                            <i class="fas fa-tag" style="color: var(--color-blue);"></i>
+                            <span>文档</span>
+                        </li>
+                        <li class="file-item">
+                            <i class="fas fa-tag" style="color: var(--color-orange);"></i>
+                            <span>重要</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 头像组件 -->
+                <div class="user-info">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-details">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-email">john.doe@example.com</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 主编辑区 -->
+            <div class="editor-container">
+                <!-- 标签页容器 -->
+                <div class="tabs-container">
+                    <div class="tab active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>欢迎.md</span>
+                        <button class="close-tab">×</button>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-file-alt"></i>
+                        <span>开发笔记.md</span>
+                        <button class="close-tab">×</button>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>项目计划书.pdf</span>
+                        <button class="close-tab">×</button>
+                    </div>
+                    <button class="btn" style="border-radius: 0; border-right: 1px solid var(--border-color);">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <!-- 内容显示区域 -->
+                <div class="content-area">
+                    <div class="editor">
+                        <textarea class="markdown-input" id="markdown-input"># 欢迎使用知识管理平台
+
+## 开始您的知识管理之旅
+
+这是一个基于 Obsidian 风格的知识文档管理平台，集成了文档存储、编辑和管理功能。
+
+### 主要功能
+
+- **文档管理**：上传、预览和管理各种文档
+- **笔记系统**：创建和编辑 Markdown 笔记
+- **标签分类**：使用标签对内容进行分类
+- **全文检索**：快速找到您需要的内容
+- **多标签页**：同时处理多个文档
+
+### 今日任务
+- [x] 创建新的知识库
+- [ ] 整理项目文档
+- [ ] 添加标签分类
+
+```javascript
+// 示例代码
+function welcome() {
+  console.log("欢迎使用知识管理平台！");
+}
